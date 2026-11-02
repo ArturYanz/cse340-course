@@ -31,7 +31,7 @@ app.get('/organizations', (req, res) => {
 
 app.get('/projects', (req, res) => {
     const title = 'Projects';
-    res.render('Projects', { title });
+    res.render('projects', { title });
 });
 
 app.listen(PORT, () => {
