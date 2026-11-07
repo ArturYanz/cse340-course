@@ -2,7 +2,7 @@ import express from 'express';
 
 import { fileURLToPath } from 'url';
 import path from 'path';
-
+import { testConnection } from './src/views/models/db';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
