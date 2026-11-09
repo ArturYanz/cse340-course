@@ -4,18 +4,15 @@
         <%= title %>
     </h1>
     <ul class="image-list">
-        <li><img class="item-logo" src="/images/icono_hoja.png" alt="Environmental category logo">
-            <strong>Environmental</strong>
-        </li>
-        <li><img class="item-logo" src="/images/icono_educacion.png" alt="Educational category logo">
-            <strong>Educational</strong>
-        </li>
-        <li><img class="item-logo" src="/images/icono_comunidad.png" alt="Community Service category logo">
-            <strong>Community Service</strong>
-        </li>
-        <li><img class="item-logo" src="/images/icono_salud.png" alt="health and Wellness category logo">
-            <strong>Health and Wellness</strong>
-        </li>
+        <% categories.forEach(category=> { %>
+            <li>
+                <img class="item-logo" src="/images/<%= category.image_filename %>"
+                    alt="<%= category.name %> category logo">
+                <strong>
+                    <%= category.name %>
+                </strong>
+            </li>
+            <% }) %>
     </ul>
 </main>
 <%- include('partials/footer') %>

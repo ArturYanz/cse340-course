@@ -4,12 +4,13 @@ import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
-
+import { getAllCategories } from './src/models/categories.js';
 
 
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,12 +47,16 @@ app.get('/projects', async(req, res) => {
     res.render('projects', { title, projects });
 });
 
-app.get('/categories', (req, res) => {
+
+
+app.get('/categories', async (req, res) => {
+    const categories = await getAllCategories();
+
     const title = 'Categories';
-    res.render('categories', { title });
+    res.render('categories', { title, categories });
 });
 
-app.listen(PORT, async() => {
+app.listen(PORT, async () => {
 
     try {
         await testConnection();

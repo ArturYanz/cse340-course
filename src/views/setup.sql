@@ -146,3 +146,110 @@ VALUES
 -- ON p.organization_id = o.organization_id;
 
 
+CREATE TABLE categories (
+category_id SERIAL PRIMARY KEY,
+name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE project_categories (
+project_id INTEGER NOT NULL
+	REFERENCES projects(project_id) ON DELETE CASCADE,
+category_id INTEGER NOT NULL
+	REFERENCES categories(category_id) ON DELETE CASCADE,
+
+PRIMARY KEY (project_id, category_id)
+	
+	
+);
+
+
+INSERT INTO categories(name)
+VALUES 
+('Environmental'),
+('Educational'),
+('Community Service'),
+('Health and Wellness');
+
+INSERT INTO project_categories (project_id, category_id)
+SELECT p.project_id, c.category_id
+FROM projects p
+JOIN categories c ON
+    (p.title = 'Community Park Renovation'
+        AND c.name IN ('Environmental', 'Community Service'))
+    OR
+    (p.title = 'School Playground Restoration'
+        AND c.name = 'Community Service')
+    OR
+    (p.title = 'Community Center Construction'
+        AND c.name = 'Community Service')
+    OR
+    (p.title = 'Public Library Improvement'
+        AND c.name IN ('Educational', 'Community Service'))
+    OR
+    (p.title = 'Sustainable Housing Project'
+        AND c.name IN ('Community Service', 'Health and Wellness'))
+    OR
+    (p.title = 'Urban Community Garden'
+        AND c.name IN ('Environmental', 'Educational'))
+    OR
+    (p.title = 'School Gardening Program'
+        AND c.name IN ('Environmental', 'Educational'))
+    OR
+    (p.title = 'Organic Food Workshop'
+        AND c.name IN ('Educational', 'Health and Wellness'))
+    OR
+    (p.title = 'Neighborhood Tree Planting'
+        AND c.name IN ('Environmental', 'Community Service'))
+    OR
+    (p.title = 'Sustainable Farming Education'
+        AND c.name IN ('Environmental', 'Educational'))
+    OR
+    (p.title = 'Food Donation Campaign'
+        AND c.name IN ('Community Service', 'Health and Wellness'))
+    OR
+    (p.title = 'Elderly Assistance Program'
+        AND c.name IN ('Community Service', 'Health and Wellness'))
+    OR
+    (p.title = 'Community Clothing Drive'
+        AND c.name = 'Community Service')
+    OR
+    (p.title = 'Children Charity Event'
+        AND c.name IN ('Community Service', 'Health and Wellness'))
+    OR
+    (p.title = 'Homeless Support Initiative'
+        AND c.name IN ('Community Service', 'Health and Wellness'));
+
+
+
+-- SELECT
+--     p.title AS project,
+--     c.name AS category
+-- FROM project_categories pc
+-- JOIN projects p
+--     ON pc.project_id = p.project_id
+-- JOIN categories c
+--     ON pc.category_id = c.category_id
+-- ORDER BY p.project_id, c.category_id;
+
+ALTER TABLE categories
+ADD COLUMN image_filename VARCHAR(255);
+
+
+UPDATE categories
+SET image_filename = 'icono_hoja.png'
+WHERE name = 'Environmental';
+
+UPDATE categories
+SET image_filename = 'icono_educacion.png'
+WHERE name = 'Educational';
+
+UPDATE categories
+SET image_filename = 'icono_comunidad.png'
+WHERE name = 'Community Service';
+
+UPDATE categories
+SET image_filename = 'icono_salud.png'
+WHERE name = 'Health and Wellness';
+
+
+-- SELECT * FROM categories;
