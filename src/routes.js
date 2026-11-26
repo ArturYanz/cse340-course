@@ -6,6 +6,8 @@ import {
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
+    showEditOrganizationForm,
+    processEditOrganizationForm,
     organizationValidation
 } from './controllers/organizations.js';
 import { showProjectDetailsPage, showProjectsPage } from './controllers/projects.js';
@@ -21,6 +23,14 @@ const router = express.Router();
 router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
+
+router.get('/edit-organization/:id', showEditOrganizationForm);
+router.post(
+    '/edit-organization/:id',
+    organizationValidation,
+    processEditOrganizationForm
+);
+
 router.get('/projects', showProjectsPage);
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);

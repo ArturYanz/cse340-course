@@ -1,7 +1,8 @@
 import {
     getAllOrganizations,
     getOrganizationDetails,
-    createOrganization
+    createOrganization,
+    updateOrganization
 } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
@@ -56,6 +57,49 @@ const showNewOrganizationForm = async (req, res) => {
     res.render('new-organization', { title });
 };
 
+const showEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+    const title = 'Edit Organization';
+
+    res.render('edit-organization', { title, organizationDetails });
+};
+
+const processEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+
+    const results = validationResult(req);
+
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect(`/edit-organization/${organizationId}`);
+    }
+
+    const { name, description, contactEmail } = req.body;
+
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    if (!organizationDetails) {
+        throw new Error('Organization not found');
+    }
+
+    const logoFilename = organizationDetails.logo_filename;
+
+    await updateOrganization(
+        organizationId,
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    );
+
+    req.flash('success', 'Organization updated successfully!');
+    res.redirect(`/organization/${organizationId}`);
+};
+
 const processNewOrganizationForm = async (req, res) => {
     
     const results = validationResult(req);
@@ -90,6 +134,8 @@ export {
     showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
+    showEditOrganizationForm,
     processNewOrganizationForm,
+    processEditOrganizationForm,
     organizationValidation
 };
