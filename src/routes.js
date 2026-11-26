@@ -5,7 +5,8 @@ import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
-    processNewOrganizationForm
+    processNewOrganizationForm,
+    organizationValidation
 } from './controllers/organizations.js';
 import { showProjectDetailsPage, showProjectsPage } from './controllers/projects.js';
 import {
@@ -28,7 +29,7 @@ router.get('/test-error', testErrorPage);
 router.get('/project/:id', showProjectDetailsPage);
 
 router.get('/new-organization', showNewOrganizationForm);
-router.post('/new-organization', processNewOrganizationForm);
+router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 
 
 export default router;
